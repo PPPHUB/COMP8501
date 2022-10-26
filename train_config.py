@@ -42,8 +42,8 @@ DATA_PATHS = {
         'valid': '../matting-data/ImageMatte/valid',
     },
     'background_images': {
-        'train': '/content/Backgrounds',
-        'valid': '/content/Backgrounds',
+        'train': '/content/test',
+        'valid': '/content/test',
     },
     'background_videos': {
         'train': '/content/Untitled Folder',
