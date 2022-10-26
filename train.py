@@ -270,50 +270,9 @@ class Trainer:
             num_workers=self.args.num_workers,
             pin_memory=True)
         
-        # Segementation datasets
-        self.log('Initializing image segmentation datasets')
-        self.dataset_seg_image = ConcatDataset([
-            CocoPanopticDataset(
-                imgdir=DATA_PATHS['coco_panoptic']['imgdir'],
-                anndir=DATA_PATHS['coco_panoptic']['anndir'],
-                annfile=DATA_PATHS['coco_panoptic']['annfile'],
-                transform=CocoPanopticTrainAugmentation(size_lr)),
-            SuperviselyPersonDataset(
-                imgdir=DATA_PATHS['spd']['imgdir'],
-                segdir=DATA_PATHS['spd']['segdir'],
-                transform=CocoPanopticTrainAugmentation(size_lr))
-        ])
-        self.datasampler_seg_image = DistributedSampler(
-            dataset=self.dataset_seg_image,
-            rank=self.rank,
-            num_replicas=self.world_size,
-            shuffle=True)
-        self.dataloader_seg_image = DataLoader(
-            dataset=self.dataset_seg_image,
-            batch_size=self.args.batch_size_per_gpu * self.args.seq_length_lr,
-            num_workers=self.args.num_workers,
-            sampler=self.datasampler_seg_image,
-            pin_memory=True)
+
         
-        self.log('Initializing video segmentation datasets')
-        self.dataset_seg_video = YouTubeVISDataset(
-            videodir=DATA_PATHS['youtubevis']['videodir'],
-            annfile=DATA_PATHS['youtubevis']['annfile'],
-            size=self.args.resolution_lr,
-            seq_length=self.args.seq_length_lr,
-            seq_sampler=TrainFrameSampler(speed=[1]),
-            transform=YouTubeVISAugmentation(size_lr))
-        self.datasampler_seg_video = DistributedSampler(
-            dataset=self.dataset_seg_video,
-            rank=self.rank,
-            num_replicas=self.world_size,
-            shuffle=True)
-        self.dataloader_seg_video = DataLoader(
-            dataset=self.dataset_seg_video,
-            batch_size=self.args.batch_size_per_gpu,
-            num_workers=self.args.num_workers,
-            sampler=self.datasampler_seg_video,
-            pin_memory=True)
+
         
     def init_model(self):
         self.log('Initializing model')
