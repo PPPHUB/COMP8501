@@ -46,23 +46,23 @@ DATA_PATHS = {
         'valid': '/content/Backgrounds',
     },
     'background_videos': {
-        'train': '../matting-data/BackgroundVideos/train',
-        'valid': '../matting-data/BackgroundVideos/valid',
+        'train': '/content/Untitled Folder',
+        'valid': '/content/Untitled Folder',
     },
     
     
     'coco_panoptic': {
-        'imgdir': '../matting-data/coco/train2017/',
-        'anndir': '../matting-data/coco/panoptic_train2017/',
-        'annfile': '../matting-data/coco/annotations/panoptic_train2017.json',
+        'imgdir': '/content/Untitled Folder',
+        'anndir': '/content/Untitled Folder',
+        'annfile': '/content/Untitled Folder',
     },
     'spd': {
-        'imgdir': '../matting-data/SuperviselyPersonDataset/img',
-        'segdir': '../matting-data/SuperviselyPersonDataset/seg',
+        'imgdir': '/content/Untitled Folder',
+        'segdir': '/content/Untitled Folder',
     },
     'youtubevis': {
-        'videodir': '../matting-data/YouTubeVIS/train/JPEGImages',
-        'annfile': '../matting-data/YouTubeVIS/train/instances.json',
+        'videodir': '/content/Untitled Folder',
+        'annfile': '/content/Untitled Folder',
     }
     
 }
