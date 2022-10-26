@@ -32,18 +32,18 @@ Background Video Train/Valid
 
 
 DATA_PATHS = {
-    
+
     'videomatte': {
-        'train': '../matting-data/VideoMatte240K_JPEG_SD/train',
-        'valid': '../matting-data/VideoMatte240K_JPEG_SD/valid',
+        'train': '/content/VideoMatte240K_JPEG_SD/train',
+        'valid': '/content/VideoMatte240K_JPEG_SD/test',
     },
     'imagematte': {
         'train': '../matting-data/ImageMatte/train',
         'valid': '../matting-data/ImageMatte/valid',
     },
     'background_images': {
-        'train': '../matting-data/Backgrounds/train',
-        'valid': '../matting-data/Backgrounds/valid',
+        'train': '/content/Backgrounds',
+        'valid': '/content/Backgrounds',
     },
     'background_videos': {
         'train': '../matting-data/BackgroundVideos/train',
