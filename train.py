@@ -336,7 +336,7 @@ class Trainer:
                     self.train_mat(true_fgr, true_pha, true_bgr, downsample_ratio=self.args.downsample_ratio, tag='hr')
                 
                 # Segmentation pass
-                if self.step % 2 == 0:
+                if self.step % 1 == 0:
                     true_img, true_seg = self.load_next_seg_video_sample()
                     self.train_seg(true_img, true_seg, log_label='seg_video')
                 else:
