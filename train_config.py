@@ -61,8 +61,8 @@ DATA_PATHS = {
         'segdir': '../matting-data/SuperviselyPersonDataset/seg',
     },
     'youtubevis': {
-        'videodir': '../matting-data/YouTubeVIS/train/JPEGImages',
-        'annfile': '../matting-data/YouTubeVIS/train/instances.json',
+        'videodir': '/content/video/test/JPEGImages',
+        'annfile': '/content/video/test/instances.json',
     }
 
 }
