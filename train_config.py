@@ -42,8 +42,8 @@ DATA_PATHS = {
         'valid': '../matting-data/ImageMatte/valid',
     },
     'background_images': {
-        'train': '/content/test',
-        'valid': '/content/test',
+        'train': '/content/Backgrounds',
+        'valid': '/content/Backgrounds',
     },
     'background_videos': {
         'train': '/content/test',
@@ -58,11 +58,11 @@ DATA_PATHS = {
     },
     'spd': {
         'imgdir': '/content/Untitled Folder',
-        'segdir': '/content/Untitled Folder',
+        'segdir': '../matting-data/SuperviselyPersonDataset/seg',
     },
     'youtubevis': {
-        'videodir': '/content/Untitled Folder',
-        'annfile': '/content/Untitled Folder',
+        'videodir': '../matting-data/YouTubeVIS/train/JPEGImages',
+        'annfile': '../matting-data/YouTubeVIS/train/instances.json',
     }
-    
+
 }
