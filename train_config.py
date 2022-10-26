@@ -46,8 +46,8 @@ DATA_PATHS = {
         'valid': '/content/test',
     },
     'background_videos': {
-        'train': '/content/Untitled Folder',
-        'valid': '/content/Untitled Folder',
+        'train': '/content/test',
+        'valid': '/content/test',
     },
     
     
