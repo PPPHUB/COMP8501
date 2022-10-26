@@ -152,7 +152,7 @@ class Trainer:
         parser.add_argument('--seq-length-hr', type=int, default=6)
         parser.add_argument('--downsample-ratio', type=float, default=0.25)
         parser.add_argument('--batch-size-per-gpu', type=int, default=1)
-        parser.add_argument('--num-workers', type=int, default=8)
+        parser.add_argument('--num-workers', type=int, default=2)
         parser.add_argument('--epoch-start', type=int, default=0)
         parser.add_argument('--epoch-end', type=int, default=16)
         # Tensorboard logging
