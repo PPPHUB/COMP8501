@@ -338,6 +338,7 @@ class Trainer:
                 # Segmentation pass
                 if self.step % 1 == 0:
                     true_img, true_seg = self.load_next_seg_video_sample()
+                    print(len(true_seg))
                     self.train_seg(true_img, true_seg, log_label='seg_video')
                 else:
                     true_img, true_seg = self.load_next_seg_image_sample()
@@ -346,7 +347,7 @@ class Trainer:
                 if self.step % self.args.checkpoint_save_interval == 0:
                     self.save()
                     
-                self.step += 1
+                #self.step += 1
                 
     def train_mat(self, true_fgr, true_pha, true_bgr, downsample_ratio, tag):
         true_fgr = true_fgr.to(self.rank, non_blocking=True)
