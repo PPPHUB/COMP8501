@@ -347,7 +347,7 @@ class Trainer:
                 if self.step % self.args.checkpoint_save_interval == 0:
                     self.save()
                     
-                #self.step += 1
+                self.step += 1
                 
     def train_mat(self, true_fgr, true_pha, true_bgr, downsample_ratio, tag):
         true_fgr = true_fgr.to(self.rank, non_blocking=True)
