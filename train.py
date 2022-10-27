@@ -338,7 +338,7 @@ class Trainer:
                 # Segmentation pass
                 if self.step % 1 == 0:
                     true_img, true_seg = self.load_next_seg_video_sample()
-                    print(len(true_seg))
+
                     self.train_seg(true_img, true_seg, log_label='seg_video')
                 else:
                     true_img, true_seg = self.load_next_seg_image_sample()
