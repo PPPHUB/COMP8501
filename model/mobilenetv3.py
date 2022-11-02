@@ -57,6 +57,10 @@ class MobileNetV3LargeEncoder(MobileNetV3):
         x = self.features[15](x)
         x = self.features[16](x)
         f4 = x
+        print(f1.shape)
+        print(f2.shape)
+        print(f3.shape)
+        print(f4.shape)
         return [f1, f2, f3, f4]
     
     def forward_time_series(self, x):
