@@ -34,6 +34,7 @@ class MobileNetV3LargeEncoder(MobileNetV3):
         del self.classifier
         
     def forward_single_frame(self, x):
+        print("x",x.shape)
         x = normalize(x, [0.485, 0.456, 0.406], [0.229, 0.224, 0.225])
         
         x = self.features[0](x)
@@ -58,10 +59,10 @@ class MobileNetV3LargeEncoder(MobileNetV3):
         x = self.features[15](x)
         x = self.features[16](x)
         f4 = x
-        print(f1.shape)
-        print(f2.shape)
-        print(f3.shape)
-        print(f4.shape)
+        print("f1",f1.shape)
+        print("f2",f2.shape)
+        print("f3",f3.shape)
+        print("f4",f4.shape)
         return [f1, f2, f3, f4]
     
     def forward_time_series(self, x):
