@@ -48,6 +48,7 @@ class MobileNetV3LargeEncoder(MobileNetV3):
         f3 = x
         x = self.features[7](x)
         x = self.features[8](x)
+
         x = self.features[9](x)
         x = self.features[10](x)
         x = self.features[11](x)
