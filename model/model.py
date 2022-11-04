@@ -57,9 +57,7 @@ class MattingNetwork(nn.Module):
         
         f1, f2, f3, f4 = self.backbone(src_sm)
         f4 = self.aspp(f4)
-        if r1!=None:
 
-            print('r1:',r1.shape)
         hid, *rec = self.decoder(src_sm, f1, f2, f3, f4, r1, r2, r3, r4,c1,c2,c3,c4)
         #print("hid",hid.shape)
         if not segmentation_pass:
