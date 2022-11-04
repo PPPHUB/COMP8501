@@ -71,6 +71,7 @@ class Evaluator:
         
         with ThreadPoolExecutor(max_workers=self.args.num_workers) as executor:
             for dataset in sorted(os.listdir(self.args.pred_dir)):
+                print(dataset)
                 if os.path.isdir(os.path.join(self.args.pred_dir, dataset)):
                     for clip in sorted(os.listdir(os.path.join(self.args.pred_dir, dataset))):
                         future = executor.submit(self.evaluate_worker, dataset, clip, position)
