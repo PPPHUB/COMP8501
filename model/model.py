@@ -57,13 +57,14 @@ class MattingNetwork(nn.Module):
 
             print('r1:',r1.shape)
         hid, *rec = self.decoder(src_sm, f1, f2, f3, f4, r1, r2, r3, r4)
-        
+        print("hid",hid.shape)
         if not segmentation_pass:
             fgr_residual, pha = self.project_mat(hid).split([3, 1], dim=-3)
             if downsample_ratio != 1:
                 fgr_residual, pha = self.refiner(src, src_sm, fgr_residual, pha, hid)
             fgr = fgr_residual + src
             fgr = fgr.clamp(0., 1.)
+            print("fgr",fgr.shape)
             pha = pha.clamp(0., 1.)
             return [fgr, pha, *rec]
         else:

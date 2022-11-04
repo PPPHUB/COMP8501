@@ -34,7 +34,7 @@ class MobileNetV3LargeEncoder(MobileNetV3):
         del self.classifier
         
     def forward_single_frame(self, x):
-        print("x",x.shape)
+
         x = normalize(x, [0.485, 0.456, 0.406], [0.229, 0.224, 0.225])
         
         x = self.features[0](x)
