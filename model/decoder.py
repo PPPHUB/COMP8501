@@ -184,13 +184,14 @@ class ConvGRU(nn.Module):
             nn.Conv2d(channels * 2, channels , kernel_size, padding=padding),
             nn.Tanh()
         )
+        self.tanh=nn.Tanh()
     def forward_single_frame(self, x, h,c):
         it=self.it(torch.cat([h,x], dim=1))
         ft=self.ft(torch.cat([h,x], dim=1))
         ct=self.ct(torch.cat([h,x], dim=1))
         c=ft*c+it*ct
         ot=self.ot(torch.cat([h,x], dim=1))
-        h=ot*nn.Tanh(c)
+        h=ot*self.Tanh(c)
         return h, h,c
     #def forward_single_frame(self, x, h):
      ##   r, z = self.ih(torch.cat([x, h], dim=1)).split(self.channels, dim=1)
