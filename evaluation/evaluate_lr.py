@@ -93,6 +93,8 @@ class Evaluator:
         
         for row, (dataset, clip, metrics) in enumerate(self.results):
             print(metrics)
+            for i in metrics:
+                print(i,":",metrics[i])
             for metricsheet, metric in zip(metricsheets, metrics.values()):
                 # Write the header
                 if row == 0:
