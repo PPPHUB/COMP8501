@@ -107,6 +107,7 @@ class Evaluator:
 
     def evaluate_worker(self, dataset, clip, position):
         framenames = sorted(os.listdir(os.path.join(self.args.pred_dir, dataset, clip, 'pha')))
+        print(clip)
         metrics = {metric_name : [] for metric_name in self.args.metrics}
         
         pred_pha_tm1 = None
