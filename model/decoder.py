@@ -91,7 +91,7 @@ class UpsamplingBlock(nn.Module):
         a, b = x.split(self.out_channels // 2, dim=1)
         b, r,c = self.gru(b, r,c)
         x = torch.cat([a, b], dim=1)
-        return x, r
+        return x, r,c
     
     def forward_time_series(self, x, f, s, r: Optional[Tensor],c: Optional[Tensor]):
         B, T, _, H, W = s.shape
@@ -106,7 +106,7 @@ class UpsamplingBlock(nn.Module):
         a, b = x.split(self.out_channels // 2, dim=2)
         b, r,c = self.gru(b, r,c)
         x = torch.cat([a, b], dim=2)
-        return x, r
+        return x, r,c
     
     def forward(self, x, f, s, r: Optional[Tensor]):
         if x.ndim == 5:
