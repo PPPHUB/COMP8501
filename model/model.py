@@ -43,6 +43,10 @@ class MattingNetwork(nn.Module):
                 r2: Optional[Tensor] = None,
                 r3: Optional[Tensor] = None,
                 r4: Optional[Tensor] = None,
+                c1: Optional[Tensor] = None,
+                c2: Optional[Tensor] = None,
+                c3: Optional[Tensor] = None,
+                c4: Optional[Tensor] = None,
                 downsample_ratio: float = 1,
                 segmentation_pass: bool = False):
         
@@ -56,15 +60,15 @@ class MattingNetwork(nn.Module):
         if r1!=None:
 
             print('r1:',r1.shape)
-        hid, *rec = self.decoder(src_sm, f1, f2, f3, f4, r1, r2, r3, r4)
-        print("hid",hid.shape)
+        hid, *rec = self.decoder(src_sm, f1, f2, f3, f4, r1, r2, r3, r4,c1,c2,c3,c4)
+        #print("hid",hid.shape)
         if not segmentation_pass:
             fgr_residual, pha = self.project_mat(hid).split([3, 1], dim=-3)
             if downsample_ratio != 1:
                 fgr_residual, pha = self.refiner(src, src_sm, fgr_residual, pha, hid)
             fgr = fgr_residual + src
             fgr = fgr.clamp(0., 1.)
-            print("fgr",fgr.shape)
+            #print("fgr",fgr.shape)
             pha = pha.clamp(0., 1.)
             return [fgr, pha, *rec]
         else:
