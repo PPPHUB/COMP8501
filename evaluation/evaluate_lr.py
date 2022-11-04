@@ -106,15 +106,15 @@ class Evaluator:
         workbook.close()
 
     def evaluate_worker(self, dataset, clip, position):
-        framenames = sorted(os.listdir(os.path.join(self.args.pred_dir, dataset, clip, 'pha')))
+        framenames = sorted(os.listdir(os.path.join(self.args.pred_dir,clip, dataset,  'pha')))
         metrics = {metric_name : [] for metric_name in self.args.metrics}
         
         pred_pha_tm1 = None
         true_pha_tm1 = None
         
-        for i, framename in enumerate(tqdm(framenames, desc=f'{dataset} {clip}', position=position, dynamic_ncols=True)):
-            true_pha = cv2.imread(os.path.join(self.args.true_dir, dataset, clip, 'pha', framename), cv2.IMREAD_GRAYSCALE).astype(np.float32) / 255
-            pred_pha = cv2.imread(os.path.join(self.args.pred_dir, dataset, clip, 'pha', framename), cv2.IMREAD_GRAYSCALE).astype(np.float32) / 255
+        for i, framename in enumerate(tqdm(framenames, desc=f'{clip} {dataset}', position=position, dynamic_ncols=True)):
+            true_pha = cv2.imread(os.path.join(self.args.true_dir,clip, dataset,  'pha', framename), cv2.IMREAD_GRAYSCALE).astype(np.float32) / 255
+            pred_pha = cv2.imread(os.path.join(self.args.pred_dir, clip,  dataset,'pha', framename), cv2.IMREAD_GRAYSCALE).astype(np.float32) / 255
             if 'pha_mad' in self.args.metrics:
                 metrics['pha_mad'].append(self.mad(pred_pha, true_pha))
             if 'pha_mse' in self.args.metrics:
@@ -133,8 +133,8 @@ class Evaluator:
             true_pha_tm1 = true_pha
             
             if 'fgr_mse' in self.args.metrics or 'fgr_mad' in self.args.metrics:
-                true_fgr = cv2.imread(os.path.join(self.args.true_dir, dataset, clip, 'fgr', framename), cv2.IMREAD_COLOR).astype(np.float32) / 255
-                pred_fgr = cv2.imread(os.path.join(self.args.pred_dir, dataset, clip, 'fgr', framename), cv2.IMREAD_COLOR).astype(np.float32) / 255
+                true_fgr = cv2.imread(os.path.join(self.args.true_dir,  clip, dataset,'fgr', framename), cv2.IMREAD_COLOR).astype(np.float32) / 255
+                pred_fgr = cv2.imread(os.path.join(self.args.pred_dir, clip,  dataset,'fgr', framename), cv2.IMREAD_COLOR).astype(np.float32) / 255
                 true_msk = true_pha > 0
                 
                 if 'fgr_mse' in self.args.metrics:
