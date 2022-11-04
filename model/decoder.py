@@ -68,7 +68,7 @@ class BottleneckBlock(nn.Module):
         a, b = x.split(self.channels // 2, dim=-3)
         b, r,c = self.gru(b, r,c)
         x = torch.cat([a, b], dim=-3)
-        return x, r
+        return x, r,c
 
     
 class UpsamplingBlock(nn.Module):
