@@ -70,6 +70,7 @@ class Evaluator:
         position = 0
         
         with ThreadPoolExecutor(max_workers=self.args.num_workers) as executor:
+            print(os.listdir(self.args.pred_dir))
             for dataset in sorted(os.listdir(self.args.pred_dir)):
                 print(dataset)
                 if os.path.isdir(os.path.join(self.args.pred_dir, dataset)):
