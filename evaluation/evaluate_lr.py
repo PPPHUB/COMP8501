@@ -106,7 +106,7 @@ class Evaluator:
                 metricsheet.write(row + 2, 0, dataset)
                 metricsheet.write(row + 2, 1, clip)
                 metricsheet.write_row(row + 2, 2, metric)
-        
+        print("done")
         workbook.close()
 
     def evaluate_worker(self, dataset, clip, position):
