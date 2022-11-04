@@ -84,7 +84,7 @@ class Evaluator:
     def write_excel(self):
         workbook = xlsxwriter.Workbook(os.path.join(self.args.pred_dir, f'{os.path.basename(self.args.pred_dir)}.xlsx'))
         summarysheet = workbook.add_worksheet('summary')
-        print(self.results[0][2].keys())
+        print(self.results)
         metricsheets = [workbook.add_worksheet(metric) for metric in self.results[0][2].keys()]
 
         for i, metric in enumerate(self.results[0][2].keys()):
