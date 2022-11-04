@@ -73,7 +73,7 @@ class Evaluator:
             for dataset in sorted(os.listdir(self.args.pred_dir)):
                 if os.path.isdir(os.path.join(self.args.pred_dir, dataset)):
                     print(dataset)
-                    for clip in ["0000"]:
+                    for clip in sorted(os.listdir(os.path.join(self.args.pred_dir, dataset))):
                         print(clip)
                         future = executor.submit(self.evaluate_worker, dataset, clip, position)
                         tasks.append((dataset, clip, future))
