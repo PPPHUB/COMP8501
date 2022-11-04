@@ -191,7 +191,7 @@ class ConvGRU(nn.Module):
         ct=self.ct(torch.cat([h,x], dim=1))
         c=ft*c+it*ct
         ot=self.ot(torch.cat([h,x], dim=1))
-        h=ot*self.Tanh(c)
+        h=ot*self.tanh(c)
         return h, h,c
     #def forward_single_frame(self, x, h):
      ##   r, z = self.ih(torch.cat([x, h], dim=1)).split(self.channels, dim=1)
