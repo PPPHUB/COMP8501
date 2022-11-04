@@ -92,6 +92,7 @@ class Evaluator:
             summarysheet.write(i, 1, f'={metric}!B2')
         
         for row, (dataset, clip, metrics) in enumerate(self.results):
+            print(metrics)
             for metricsheet, metric in zip(metricsheets, metrics.values()):
                 # Write the header
                 if row == 0:
