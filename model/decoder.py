@@ -108,11 +108,11 @@ class UpsamplingBlock(nn.Module):
         x = torch.cat([a, b], dim=2)
         return x, r,c
     
-    def forward(self, x, f, s, r: Optional[Tensor]):
+    def forward(self, x, f, s, r: Optional[Tensor],c: Optional[Tensor]):
         if x.ndim == 5:
-            return self.forward_time_series(x, f, s, r)
+            return self.forward_time_series(x, f, s, r,c)
         else:
-            return self.forward_single_frame(x, f, s, r)
+            return self.forward_single_frame(x, f, s, r,c)
 
 
 class OutputBlock(nn.Module):
