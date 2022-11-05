@@ -364,9 +364,8 @@ class U2NET(nn.Module):
     self.side6 = nn.Conv2d(512, out_ch, 3, padding=1)
 
     self.outconv = nn.Conv2d(6*out_ch, out_ch, 1)
-    if pretrained:
-      print("loaded")
-      self.load_state_dict(torch.load("/content/drive/Mydrive/checkpoint.pth"))
+
+    self.load_state_dict(torch.load("/content/drive/Mydrive/checkpoint.pth"))
   def forward(self, x):
 
     hx = x
