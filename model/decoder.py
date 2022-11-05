@@ -23,6 +23,7 @@ class RecurrentDecoder(nn.Module):
                 c3: Optional[Tensor], c4: Optional[Tensor],f0: Optional[Tensor]):
 
         s1, s2, s3 = self.avgpool(s0)
+        print(f4.shape)
         x4, r4,c4 = self.decode4(f4, r4,c4)
         x3, r3,c3 = self.decode3(x4, f3, s3, r3,c3)
         x2, r2,c2 = self.decode2(x3, f2, s2, r2,c2)
