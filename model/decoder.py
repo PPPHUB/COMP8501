@@ -7,18 +7,21 @@ from typing import Tuple, Optional
 class RecurrentDecoder(nn.Module):
     def __init__(self, feature_channels, decoder_channels):
         super().__init__()
-        self.avgpool = AvgPool()
-        self.decode4 = BottleneckBlock(feature_channels[3])
-        self.decode3 = UpsamplingBlock(feature_channels[3], feature_channels[2], 3, decoder_channels[0])
-        self.decode2 = UpsamplingBlock(decoder_channels[0], feature_channels[1], 3, decoder_channels[1])
-        self.decode1 = UpsamplingBlock(decoder_channels[1], feature_channels[0], 3, decoder_channels[2])
-        self.decode0 = OutputBlock(decoder_channels[2], 3, decoder_channels[3])
+        if len(feature_channels)!=5:
+            self.avgpool = AvgPool()
+            self.decode4 = BottleneckBlock(feature_channels[3])
+            self.decode3 = UpsamplingBlock(feature_channels[3], feature_channels[2], 3, decoder_channels[0])
+            self.decode2 = UpsamplingBlock(decoder_channels[0], feature_channels[1], 3, decoder_channels[1])
+            self.decode1 = UpsamplingBlock(decoder_channels[1], feature_channels[0], 3, decoder_channels[2])
+            self.decode0 = OutputBlock(decoder_channels[2], 3, decoder_channels[3])
+
 
     def forward(self,
                 s0: Tensor, f1: Tensor, f2: Tensor, f3: Tensor, f4: Tensor,
                 r1: Optional[Tensor], r2: Optional[Tensor],
                 r3: Optional[Tensor], r4: Optional[Tensor],c1: Optional[Tensor], c2: Optional[Tensor],
-                c3: Optional[Tensor], c4: Optional[Tensor]):
+                c3: Optional[Tensor], c4: Optional[Tensor],f0: Tensor):
+
         s1, s2, s3 = self.avgpool(s0)
         x4, r4,c4 = self.decode4(f4, r4,c4)
         x3, r3,c3 = self.decode3(x4, f3, s3, r3,c3)

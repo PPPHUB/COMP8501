@@ -10,6 +10,8 @@ from .lraspp import LRASPP
 from .decoder import RecurrentDecoder, Projection
 from .fast_guided_filter import FastGuidedFilterRefiner
 from .deep_guided_filter import DeepGuidedFilterRefiner
+from .u2netencoder import U2NET
+
 
 class MattingNetwork(nn.Module):
     def __init__(self,
@@ -19,16 +21,16 @@ class MattingNetwork(nn.Module):
         super().__init__()
         assert variant in ['mobilenetv3', 'resnet50','encoder2']
         assert refiner in ['fast_guided_filter', 'deep_guided_filter']
-        
+        self.variant=variant
         if variant == 'mobilenetv3':
             self.backbone = MobileNetV3LargeEncoder(pretrained_backbone)
             self.aspp = LRASPP(960, 128)
             self.decoder = RecurrentDecoder([16, 24, 40, 128], [80, 40, 32, 16])
         if variant == 'encoder2':
 
-            self.backbone = MobileNetV3LargeEncoder(pretrained_backbone)
-            self.aspp = LRASPP(960, 128)
-            self.decoder = RecurrentDecoder([16, 24, 40, 128], [80, 40, 32, 16])
+            self.backbone = U2NET(pretrained_backbone)
+            self.aspp = LRASPP(512, 512)
+            self.decoder = RecurrentDecoder([64, 128, 256,512], [128, 64, 32, 16])
 
         else:
             self.backbone = ResNet50Encoder(pretrained_backbone)
@@ -60,11 +62,17 @@ class MattingNetwork(nn.Module):
             src_sm = self._interpolate(src, scale_factor=downsample_ratio)
         else:
             src_sm = src
-        
-        f1, f2, f3, f4 = self.backbone(src_sm)
+
+        f0=None
+
+        if self.variant!="encoder2":
+            f1, f2, f3, f4 = self.backbone(src_sm)
+        else:
+            f0,f1, f2, f3, f4 = self.backbone(src_sm)
         f4 = self.aspp(f4)
 
         hid, *rec = self.decoder(src_sm, f1, f2, f3, f4, r1, r2, r3, r4,c1,c2,c3,c4)
+        print(hid.shape)
         #print("hid",hid.shape)
         if not segmentation_pass:
             fgr_residual, pha = self.project_mat(hid).split([3, 1], dim=-3)

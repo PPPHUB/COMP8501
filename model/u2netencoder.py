@@ -328,7 +328,8 @@ class RSU4F(nn.Module):  # UNet04FRES(nn.Module):
 ##### U^2-Net ####
 class U2NET(nn.Module):
 
-  def __init__(self, in_ch=4, out_ch=1):
+  def __init__(self, in_ch=4, out_ch=1,pretrained=True):
+
     super(U2NET, self).__init__()
 
     self.stage1 = RSU7(in_ch, 32, 64)
@@ -363,7 +364,8 @@ class U2NET(nn.Module):
     self.side6 = nn.Conv2d(512, out_ch, 3, padding=1)
 
     self.outconv = nn.Conv2d(6*out_ch, out_ch, 1)
-
+    if pretrained:
+      self.load_state_dict(torch.load("/content/drive/Mydrive/checkpoint.pth"))
   def forward(self, x):
 
     hx = x
@@ -427,5 +429,5 @@ class U2NET(nn.Module):
 
     d0 = self.outconv(torch.cat((d1, d2u, d3u, d4u, d5u, d6u), 1))
 
-    return F.sigmoid(d0), F.sigmoid(d1), F.sigmoid(d2), F.sigmoid(d3), F.sigmoid(d4), F.sigmoid(d5), F.sigmoid(d6)
+    return F.sigmoid(d0), hx5d, hx4d, hx3d,hx1d
 
