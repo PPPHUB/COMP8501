@@ -7,13 +7,12 @@ from typing import Tuple, Optional
 class RecurrentDecoder(nn.Module):
     def __init__(self, feature_channels, decoder_channels):
         super().__init__()
-        if len(feature_channels)!=5:
-            self.avgpool = AvgPool()
-            self.decode4 = BottleneckBlock(feature_channels[3])
-            self.decode3 = UpsamplingBlock(feature_channels[3], feature_channels[2], 3, decoder_channels[0])
-            self.decode2 = UpsamplingBlock(decoder_channels[0], feature_channels[1], 3, decoder_channels[1])
-            self.decode1 = UpsamplingBlock(decoder_channels[1], feature_channels[0], 3, decoder_channels[2])
-            self.decode0 = OutputBlock(decoder_channels[2], 3, decoder_channels[3])
+        self.avgpool = AvgPool()
+        self.decode4 = BottleneckBlock(feature_channels[3])
+        self.decode3 = UpsamplingBlock(feature_channels[3], feature_channels[2], 3, decoder_channels[0])
+        self.decode2 = UpsamplingBlock(decoder_channels[0], feature_channels[1], 3, decoder_channels[1])
+        self.decode1 = UpsamplingBlock(decoder_channels[1], feature_channels[0], 3, decoder_channels[2])
+        self.decode0 = OutputBlock(decoder_channels[2], 3, decoder_channels[3])
 
 
     def forward(self,
@@ -25,7 +24,7 @@ class RecurrentDecoder(nn.Module):
         s1, s2, s3 = self.avgpool(s0)
         print(f4.shape)
         x4, r4,c4 = self.decode4(f4, r4,c4)
-        x3, r3,c3 = self.decode3(x4, f3.unsqueeze(0), s3, r3,c3)
+        x3, r3,c3 = self.decode3(x4, f3, s3, r3,c3)
         x2, r2,c2 = self.decode2(x3, f2, s2, r2,c2)
         x1, r1,c1 = self.decode1(x2, f1, s1, r1,c1)
 
