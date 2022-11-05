@@ -72,7 +72,8 @@ class MattingNetwork(nn.Module):
             f0,f1, f2, f3, f4 = self.backbone(src_sm)
 
         f4 = self.aspp(f4)
-        f0=nn.functional.interpolate(f0,src_sm.shape)
+        print(f0.shape)
+        #f0=nn.functional.interpolate(f0,src_sm.shape)
         hid, *rec = self.decoder(src_sm, f1, f2, f3, f4, r1, r2, r3, r4,c1,c2,c3,c4,f0)
         print("hid",hid.shape)
         print("hid", f0.shape)
