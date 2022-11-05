@@ -24,9 +24,12 @@ class RecurrentDecoder(nn.Module):
         s1, s2, s3 = self.avgpool(s0)
 
         x4, r4,c4 = self.decode4(f4, r4,c4)
-        print("\nx1",f1.shape)
+
         x3, r3,c3 = self.decode3(x4, f3, s3, r3,c3)
         x2, r2,c2 = self.decode2(x3, f2, s2, r2,c2)
+        print("\nr1", f1.shape)
+        print("\nx1", x2.shape)
+        print("\ns1", s1.shape)
         x1, r1,c1 = self.decode1(x2, f1, s1, r1,c1)
 
 
