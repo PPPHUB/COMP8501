@@ -29,6 +29,7 @@ class MattingNetwork(nn.Module):
         if variant == 'encoder2':
 
             self.backbone = U2NET(pretrained_backbone)
+            self.backbone.load_state_dict(torch.load("/content/drive/MyDrive/u2net_human_seg.pth"))
             self.aspp = LRASPP(512, 512)
             self.decoder = RecurrentDecoder([64, 128, 256,512], [128, 64, 32, 16])
 
