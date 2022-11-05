@@ -28,7 +28,7 @@ class RecurrentDecoder(nn.Module):
         print("x4",x4.shape)
         print("x4",f3.shape)
         print("x4",s3.shape)
-        x3, r3,c3 = self.decode3(x4.unsqueeze(0), f3.unsqueeze(0), s3, r3,c3)
+        x3, r3,c3 = self.decode3(x4, f3.unsqueeze(0), s3, r3,c3)
         x2, r2,c2 = self.decode2(x3, f2, s2, r2,c2)
         x1, r1,c1 = self.decode1(x2, f1, s1, r1,c1)
 
