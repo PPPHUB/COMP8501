@@ -367,7 +367,7 @@ class U2NET(nn.Module):
   def forward(self, x):
 
     hx = x
-    print("x",x.shape)
+
     # stage 1
     hx=hx.reshape(hx.shape[1:])
     hx1 = self.stage1(hx)
