@@ -364,8 +364,9 @@ class U2NET(nn.Module):
     self.side6 = nn.Conv2d(512, out_ch, 3, padding=1)
 
     self.outconv = nn.Conv2d(6*out_ch, out_ch, 1)
-
-    self.load_state_dict(torch.load("/content/drive/Mydrive/checkpoint.pth"))
+    if pretrained:
+      print("loaded")
+      self.load_state_dict(torch.load("/content/drive/Mydrive/checkpoint.pth"))
   def forward(self, x):
 
     hx = x
@@ -428,6 +429,6 @@ class U2NET(nn.Module):
     d6u = _upsample_like(d6, d1)
 
     d0 = self.outconv(torch.cat((d1, d2u, d3u, d4u, d5u, d6u), 1))
-
+    print(d0.shape)
     return F.sigmoid(d0), hx5d, hx4d, hx3d,hx1d
 
