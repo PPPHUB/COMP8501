@@ -25,9 +25,6 @@ class RecurrentDecoder(nn.Module):
         s1, s2, s3 = self.avgpool(s0)
         print(f4.shape)
         x4, r4,c4 = self.decode4(f4, r4,c4)
-        print("x4",x4.shape)
-        print("x4",f3.shape)
-        print("x4",s3.shape)
         x3, r3,c3 = self.decode3(x4, f3.unsqueeze(0), s3, r3,c3)
         x2, r2,c2 = self.decode2(x3, f2, s2, r2,c2)
         x1, r1,c1 = self.decode1(x2, f1, s1, r1,c1)
@@ -97,6 +94,7 @@ class UpsamplingBlock(nn.Module):
         print("x",x.shape)
         print("f",f.shape)
         print(s.shape,"s")
+
         x = torch.cat([x, f, s], dim=1)
         x = self.conv(x)
         a, b = x.split(self.out_channels // 2, dim=1)
