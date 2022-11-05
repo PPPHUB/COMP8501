@@ -369,6 +369,7 @@ class U2NET(nn.Module):
     hx = x
     print("x",x.shape)
     # stage 1
+    hx=hx.reshape(hx.shape[1:])
     hx1 = self.stage1(hx)
     hx = self.pool12(hx1)
 
