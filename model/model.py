@@ -23,10 +23,9 @@ class MattingNetwork(nn.Module):
         assert refiner in ['fast_guided_filter', 'deep_guided_filter']
         self.variant=variant
         if variant == 'mobilenetv3':
-            self.backbone = U2NET()
-            self.backbone.load_state_dict(torch.load("/content/drive/MyDrive/u2net_human_seg.pth"))
-            self.aspp = LRASPP(512, 512)
-            self.decoder = RecurrentDecoder([64, 128, 256,512], [128, 64, 32, 16])
+            self.backbone = MobileNetV3LargeEncoder(pretrained_backbone)
+            self.aspp = LRASPP(960, 128)
+            self.decoder = RecurrentDecoder([16, 24, 40, 128], [80, 40, 32, 16])
         if variant == 'encoder2':
 
             self.backbone = U2NET()
@@ -65,10 +64,10 @@ class MattingNetwork(nn.Module):
         else:
             src_sm = src
 
-        #f0=None
-        print(self.variant)
+        f0=None
+
         if self.variant!="encoder2":
-            f0,f1, f2, f3, f4 = self.backbone(src_sm)
+            f1, f2, f3, f4 = self.backbone(src_sm)
         else:
             f0,f1, f2, f3, f4 = self.backbone(src_sm)
 
