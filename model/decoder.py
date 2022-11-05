@@ -90,9 +90,9 @@ class UpsamplingBlock(nn.Module):
     def forward_single_frame(self, x, f, s, r: Optional[Tensor],c: Optional[Tensor]):
         x = self.upsample(x)
         x = x[:, :, :s.size(2), :s.size(3)]
-        print("x",x)
-        print("f",f)
-        print(s,"s")
+        print("x",x.shape)
+        print("f",f.shape)
+        print(s.shape,"s")
         x = torch.cat([x, f, s], dim=1)
         x = self.conv(x)
         a, b = x.split(self.out_channels // 2, dim=1)
