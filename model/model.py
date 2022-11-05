@@ -65,7 +65,7 @@ class MattingNetwork(nn.Module):
             src_sm = src
 
         f0=None
-
+        print(self.variant)
         if self.variant!="encoder2":
             f1, f2, f3, f4 = self.backbone(src_sm)
         else:
