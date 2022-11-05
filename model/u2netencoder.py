@@ -432,5 +432,6 @@ class U2NET(nn.Module):
     hx4d.unsqueeze(0)
     hx3d.unsqueeze(0)
     hx5d.unsqueeze(0)
+    d0.unsqueeze(0)
     return F.sigmoid(d0),hx1d, hx4d, hx3d ,hx5d
 
