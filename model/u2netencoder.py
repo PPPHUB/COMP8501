@@ -428,5 +428,5 @@ class U2NET(nn.Module):
 
     d0 = self.outconv(torch.cat((d1, d2u, d3u, d4u, d5u, d6u), 1))
 
-    return F.sigmoid(d0).unsqueeze(0),hx1d.unsqueeze(0), hx3d.unsqueeze(0), hx4d.unsqueeze(0) ,hx5d.unsqueeze(0)
+    return F.sigmoid(d0).unsqueeze(0),hx2d.unsqueeze(0), hx3d.unsqueeze(0), hx4d.unsqueeze(0) ,hx5d.unsqueeze(0)
 
