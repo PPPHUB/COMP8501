@@ -187,22 +187,28 @@ class ConvGRU(nn.Module):
             nn.Tanh()
         )
         self.tanh=nn.Tanh()
+    def forward_single_frame_lstm(self, x, h,c):#lstm
+        it=self.it(torch.cat([h,x], dim=1))
+        ft=self.ft(torch.cat([h,x], dim=1))
+        ct=self.ct(torch.cat([h,x], dim=1))
+        c=ft*c+it*ct
+        ot=self.ot(torch.cat([h,x], dim=1))
+        r, z = self.ih(torch.cat([x, h], dim=1)).split(self.channels, dim=1)
+        c = self.hh(torch.cat([x, r * h], dim=1))
+        h = (1 - z) * h + z * c
+
+        return h, h,c
     def forward_single_frame(self, x, h):
         r, z = self.ih(torch.cat([x, h], dim=1)).split(self.channels, dim=1)
         c = self.hh(torch.cat([x, r * h], dim=1))
         h = (1 - z) * h + z * c
-        return h, h,None
-    #def forward_single_frame(self, x, h):
-     ##   r, z = self.ih(torch.cat([x, h], dim=1)).split(self.channels, dim=1)
-    #    c = self.hh(torch.cat([x, r * h], dim=1))
-    #    h = (1 - z) * h + z * c
 
-      #  return h, h
+        return h, h
 
     def forward_time_series(self, x, h,c):
         o = []
         for xt in x.unbind(dim=1):
-            ot, h,c = self.forward_single_frame(xt, h,c)
+            ot, h,c = self.forward_single_frame_lstm(xt, h,c)
             o.append(ot)
         o = torch.stack(o, dim=1)
         return o, h,c
@@ -217,7 +223,7 @@ class ConvGRU(nn.Module):
         if x.ndim == 5:
             return self.forward_time_series(x, h,c)
         else:
-            return self.forward_single_frame(x, h,c)
+            return self.forward_single_frame_lstm(x, h,c)
 
 
 class Projection(nn.Module):
