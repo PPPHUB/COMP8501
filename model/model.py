@@ -23,7 +23,7 @@ class MattingNetwork(nn.Module):
         assert refiner in ['fast_guided_filter', 'deep_guided_filter']
         self.variant=variant
         if variant == 'mobilenetv3':
-            self.backbone.load_state_dict(torch.load("/content/drive/MyDrive/u2net_human_seg.pth"))
+            self.backbone.load_state_dict(torch.load("/content/drive/MyDrive/u2net_human_seg.pth"),map_location=torch.device('cpu'))
             self.aspp = LRASPP(960, 128)
             self.decoder = RecurrentDecoder([16, 24, 40, 128], [80, 40, 32, 16])
         if variant == 'encoder2':
