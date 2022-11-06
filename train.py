@@ -122,7 +122,7 @@ from model import MattingNetwork
 from train_config import DATA_PATHS
 from train_loss import matting_loss, segmentation_loss
 
-
+LOSSr=[]
 class Trainer:
     def __init__(self, rank, world_size):
         self.parse_args()
@@ -346,7 +346,8 @@ class Trainer:
                     
                 if self.step % self.args.checkpoint_save_interval == 0:
                     self.save()
-                    
+                    global  LOSSr
+                    print(LOSSr)
                 self.step += 1
                 
     def train_mat(self, true_fgr, true_pha, true_bgr, downsample_ratio, tag):
@@ -368,7 +369,7 @@ class Trainer:
         if self.rank == 0 and self.step % self.args.log_train_loss_interval == 0:
             for loss_name, loss_value in loss.items():
                 self.writer.add_scalar(f'train_{tag}_{loss_name}', loss_value, self.step)
-            
+
         if self.rank == 0 and self.step % self.args.log_train_images_interval == 0:
             self.writer.add_image(f'train_{tag}_pred_fgr', make_grid(pred_fgr.flatten(0, 1), nrow=pred_fgr.size(1)), self.step)
             self.writer.add_image(f'train_{tag}_pred_pha', make_grid(pred_pha.flatten(0, 1), nrow=pred_pha.size(1)), self.step)
@@ -390,10 +391,10 @@ class Trainer:
         self.scaler.step(self.optimizer)
         self.scaler.update()
         self.optimizer.zero_grad()
-        
+        global (LOSSr)
         if self.rank == 0 and (self.step - self.step % 2) % self.args.log_train_loss_interval == 0:
             self.writer.add_scalar(f'{log_label}_loss', loss, self.step)
-        
+        LOSSr.append(loss)
         if self.rank == 0 and (self.step - self.step % 2) % self.args.log_train_images_interval == 0:
             self.writer.add_image(f'{log_label}_pred_seg', make_grid(pred_seg.flatten(0, 1).float().sigmoid(), nrow=self.args.seq_length_lr), self.step)
             self.writer.add_image(f'{log_label}_true_seg', make_grid(true_seg.flatten(0, 1), nrow=self.args.seq_length_lr), self.step)
