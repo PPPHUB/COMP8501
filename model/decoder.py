@@ -208,7 +208,7 @@ class ConvGRU(nn.Module):
     def forward_time_series(self, x, h,c):
         o = []
         for xt in x.unbind(dim=1):
-            ot, h,c = self.forward_single_frame_lstm(xt, h,c)
+            ot, h,c = self.forward_single_frame(xt, h,c)
             o.append(ot)
         o = torch.stack(o, dim=1)
         return o, h,c
