@@ -203,7 +203,7 @@ class ConvGRU(nn.Module):
         c = self.hh(torch.cat([x, r * h], dim=1))
         h = (1 - z) * h + z * c
 
-        return h, h,None
+        return h, h,c
 
     def forward_time_series(self, x, h,c):
         o = []
