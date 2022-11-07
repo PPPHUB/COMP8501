@@ -82,7 +82,7 @@ class UpsamplingBlock(nn.Module):
             nn.BatchNorm2d(out_channels),
             nn.ReLU(True),
         )
-        self.gru = ConvGRU(out_channels // 2)
+        self.gru = ConvGRU(out_channels // 2)# lstm and gru were implemented in this function.
 
     def forward_single_frame(self, x, f, s, r: Optional[Tensor],c: Optional[Tensor]):
         x = self.upsample(x)
@@ -187,7 +187,7 @@ class ConvGRU(nn.Module):
             nn.Tanh()
         )
         self.tanh=nn.Tanh()
-    def forward_single_frame_lstm(self, x, h,c):#lstm
+    def forward_single_frame_lstm(self, x, h,c):#Conv_lstm
         it=self.it(torch.cat([h,x], dim=1))
         ft=self.ft(torch.cat([h,x], dim=1))
         ct=self.ct(torch.cat([h,x], dim=1))
@@ -203,7 +203,7 @@ class ConvGRU(nn.Module):
         c = self.hh(torch.cat([x, r * h], dim=1))
         h = (1 - z) * h + z * c
 
-        return h, h,c
+        return h, h,c# add c to have same number of return values as lstm., so that can switch between two func
 
     def forward_time_series(self, x, h,c):
         o = []

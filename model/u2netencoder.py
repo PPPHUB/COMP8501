@@ -2,7 +2,7 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
-
+# u^2net structure, used to encoder.
 class REBNCONV(nn.Module):
   def __init__(self, in_ch=3, out_ch=4, dirate=1):
     super(REBNCONV, self).__init__()
@@ -30,6 +30,9 @@ def _upsample_like(src, tar):
 
 
 ### RSU-7 ###
+
+
+#in each block the network do a downsample and upsample to
 class RSU7(nn.Module):  # UNet07DRES(nn.Module):
 
   def __init__(self, in_ch=3, mid_ch=12, out_ch=4):

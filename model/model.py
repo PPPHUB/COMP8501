@@ -11,8 +11,7 @@ from .decoder import RecurrentDecoder, Projection
 from .fast_guided_filter import FastGuidedFilterRefiner
 from .deep_guided_filter import DeepGuidedFilterRefiner
 from .u2netencoder import U2NET
-
-
+from .decoder import ConvGRU
 class MattingNetwork(nn.Module):
     def __init__(self,
                  variant: str = 'mobilenetv3',
@@ -23,18 +22,20 @@ class MattingNetwork(nn.Module):
         assert refiner in ['fast_guided_filter', 'deep_guided_filter']
         self.variant=variant
         if variant == 'mobilenetv3':
-            self.backbone = U2NET()
-            self.backbone.load_state_dict(torch.load("/content/drive/MyDrive/u2net_human_seg.pth") )
-            self.aspp = LRASPP(512, 512)
-            self.decoder = RecurrentDecoder([64, 128, 256,512], [128, 64, 32, 16])
+            if variant == 'mobilenetv3':
+                self.backbone = MobileNetV3LargeEncoder(pretrained_backbone)
+                self.aspp = LRASPP(960, 128)
+                self.decoder = RecurrentDecoder([16, 24, 40, 128], [80, 40, 32, 16])
 
         if variant == 'encoder2':
 
-            self.backbone = U2NET()
+            self.backbone = U2NET()# init the U-encoder block  part and read the pre-trained model.
             self.backbone.load_state_dict(torch.load("/content/drive/MyDrive/u2net_human_seg.pth") )
             self.aspp = LRASPP(512, 512)
             self.decoder = RecurrentDecoder([64, 128, 256,512], [128, 64, 32, 16])
-
+            self.skipconn= U2NET()# for sikp connection
+            self.skipconn.load_state_dict(torch.load("/content/drive/MyDrive/u2net_human_seg.pth") )
+            self.gruskip=[ConvGRU(i) for i in [64, 128, 256,512]]
         else:
             self.backbone = ResNet50Encoder(pretrained_backbone)
             self.aspp = LRASPP(2048, 256)
@@ -67,26 +68,29 @@ class MattingNetwork(nn.Module):
             src_sm = src
 
 
-        #print(self.backbone)
+
         if self.variant!="encoder2":
-           f0, f1, f2, f3, f4 = self.backbone(src_sm)
+            f1, f2, f3, f4 = self.backbone(src_sm)
         else:
-            f0,f1, f2, f3, f4 = self.backbone(src_sm)
+            f0,f1, f2, f3, f4 = self.backbone(src_sm)# have different output.
+            if hasattr(self,"h1"):
+                f1+=self.gruskip[0]( self.h1)
+                f2+=self.gruskip[1]( self.h2)
+                f3+=self.gruskip[2]( self.h3)
+                f4+=self.gruskip[3]( self.h4)
+
 
         f4 = self.aspp(f4)
-      #  print(f0.shape)
-        #f0=nn.functional.interpolate(f0,src_sm.shape)
+
         hid, *rec = self.decoder(src_sm, f1, f2, f3, f4, r1, r2, r3, r4,c1,c2,c3,c4,f0)
-        #print("hid",hid.shape)
-       # print("hid", f0.shape)
-        #print("hid",hid.shape)
+        if self.variant=="encoder2"
+            self.h1,self.h2,self.h3,self.h4=self.skipconn(hid)
         if not segmentation_pass:
             fgr_residual, pha = self.project_mat(hid).split([3, 1], dim=-3)
             if downsample_ratio != 1:
                 fgr_residual, pha = self.refiner(src, src_sm, fgr_residual, pha, hid)
             fgr = fgr_residual + src
             fgr = fgr.clamp(0., 1.)
-            #print("fgr",fgr.shape)
             pha = pha.clamp(0., 1.)
             return [fgr, pha, *rec]
         else:
