@@ -391,10 +391,10 @@ class Trainer:
         self.scaler.step(self.optimizer)
         self.scaler.update()
         self.optimizer.zero_grad()
-        global (LOSSr)
+        global LOSSr
         if self.rank == 0 and (self.step - self.step % 2) % self.args.log_train_loss_interval == 0:
             self.writer.add_scalar(f'{log_label}_loss', loss, self.step)
-        LOSSr.append(loss)
+        LOSSr.append(float(loss.cpu()))
         if self.rank == 0 and (self.step - self.step % 2) % self.args.log_train_images_interval == 0:
             self.writer.add_image(f'{log_label}_pred_seg', make_grid(pred_seg.flatten(0, 1).float().sigmoid(), nrow=self.args.seq_length_lr), self.step)
             self.writer.add_image(f'{log_label}_true_seg', make_grid(true_seg.flatten(0, 1), nrow=self.args.seq_length_lr), self.step)
